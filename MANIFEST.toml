@@ -1,0 +1,9 @@
+uuid = "aa2c131a-4a0d-4da7-8715-5240bb8b723d"
+name = "Test API Settings"
+authors = ["Bob Swift"]
+version = "1.0"
+description = "This plugin tests the plugin api settings."
+api = ['3.0']
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+categories = ["other"]
