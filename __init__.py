@@ -48,10 +48,10 @@ class TestSettings(BaseAction):
 
         self.api.logger.info("Setting Test API Settings Plugin config 'int_setting' to 42")
         self.api.plugin_config['int_setting'] = 42
-        self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %d", self.api.plugin_config.get('int_setting'))
+        self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %s", self.api.plugin_config.get('int_setting'))
         self.api.logger.info("Setting Test API Settings Plugin config 'int_setting' to -1")
         self.api.plugin_config['int_setting'] = -1
-        self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %d", self.api.plugin_config.get('int_setting'))
+        self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %s", self.api.plugin_config.get('int_setting'))
 
         self.api.logger.info("Setting Test API Settings Plugin config 'str_setting' to 'Hello, World!'")
         self.api.plugin_config['str_setting'] = 'Hello, World!'
@@ -90,7 +90,7 @@ class ClearSettings(BaseAction):
 
         self.api.logger.info("Removing Test API Settings Plugin config 'int_setting'")
         self.api.plugin_config.remove('int_setting')
-        self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %d", self.api.plugin_config.get('int_setting'))
+        self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %s", self.api.plugin_config.get('int_setting'))
 
         self.api.logger.info("Removing Test API Settings Plugin config 'str_setting'")
         self.api.plugin_config.remove('str_setting')
