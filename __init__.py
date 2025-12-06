@@ -35,7 +35,7 @@ class TestSettings(BaseAction):
 
     def __init__(self, api: PluginApi = None):
         super().__init__(api=api)
-        self.api = api
+        self.api: PluginApi
 
     def callback(self, objs):
         self.api.logger.debug("Testing Test API Settings Plugin configuration management.")
@@ -52,6 +52,13 @@ class TestSettings(BaseAction):
         self.api.logger.info("Setting Test API Settings Plugin config 'int_setting' to -1")
         self.api.plugin_config['int_setting'] = -1
         self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %s", self.api.plugin_config.get('int_setting'))
+
+        self.api.logger.info("Setting Test API Settings Plugin config 'float_setting' to 1.23")
+        self.api.plugin_config['float_setting'] = 1.23
+        self.api.logger.info("Getting Test API Settings Plugin config 'float_setting': %s", self.api.plugin_config.get('float_setting'))
+        self.api.logger.info("Setting Test API Settings Plugin config 'float_setting' to -2.34")
+        self.api.plugin_config['float_setting'] = -2.34
+        self.api.logger.info("Getting Test API Settings Plugin config 'float_setting': %s", self.api.plugin_config.get('float_setting'))
 
         self.api.logger.info("Setting Test API Settings Plugin config 'str_setting' to 'Hello, World!'")
         self.api.plugin_config['str_setting'] = 'Hello, World!'
@@ -92,6 +99,10 @@ class ClearSettings(BaseAction):
         self.api.plugin_config.remove('int_setting')
         self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %s", self.api.plugin_config.get('int_setting'))
 
+        self.api.logger.info("Removing Test API Settings Plugin config 'float_setting'")
+        self.api.plugin_config.remove('float_setting')
+        self.api.logger.info("Getting Test API Settings Plugin config 'float_setting': %s", self.api.plugin_config.get('float_setting'))
+
         self.api.logger.info("Removing Test API Settings Plugin config 'str_setting'")
         self.api.plugin_config.remove('str_setting')
         self.api.logger.info("Getting Test API Settings Plugin config 'str_setting': %s", self.api.plugin_config.get('str_setting'))
@@ -105,6 +116,50 @@ class ClearSettings(BaseAction):
         self.api.logger.info("Getting Test API Settings Plugin config 'dict_setting': %s", self.api.plugin_config.get('dict_setting'))
 
 
+class WriteSettingTypes(BaseAction):
+    NAME = 'Test API Settings Types (write settings)'
+
+    def __init__(self, api: PluginApi = None):
+        super().__init__(api=api)
+        self.api: PluginApi
+
+    def callback(self, objs):
+        self.api.logger.debug("Testing API plugin settings types (writing settings).")
+
+        self.api.logger.info("Setting 'bool_setting' to True")
+        self.api.plugin_config['bool_setting'] = True
+
+        self.api.logger.info("Setting 'int_setting' to 42")
+        self.api.plugin_config['int_setting'] = 42
+
+        self.api.logger.info("Setting 'float_setting' to 1.23")
+        self.api.plugin_config['float_setting'] = 1.23
+
+        self.api.logger.info("Setting 'str_setting' to 'Hello, World!'")
+        self.api.plugin_config['str_setting'] = 'Hello, World!'
+
+        self.api.logger.info("Setting 'list_setting' to ['one', 'two', 'three']")
+        self.api.plugin_config['list_setting'] = ['one', 'two', 'three']
+
+        self.api.logger.info("Setting Test API Settings Plugin config 'dict_setting' to {'key1': 'value1', 'key2': 'value2'}")
+        self.api.plugin_config['dict_setting'] = {'key1': 'value1', 'key2': 'value2'}
+
+
+class ReadSettingTypes(BaseAction):
+    NAME = 'Test API Settings Types (read settings)'
+
+    def __init__(self, api: PluginApi = None):
+        super().__init__(api=api)
+        self.api: PluginApi
+
+    def callback(self, objs):
+        self.api.logger.debug("Testing API plugin settings types (reading settings).")
+
+        for key in ['bool_setting', 'int_setting', 'float_setting', 'str_setting', 'list_setting', 'dict_setting']:
+            value = self.api.plugin_config.get(key)
+            self.api.logger.info(f".get('{key}')  {type(value)}  = {repr(value)}")
+
+
 def enable(api: PluginApi):
     """Called when plugin is enabled."""
     api.register_file_action(TestSettings)
@@ -114,3 +169,11 @@ def enable(api: PluginApi):
     api.register_file_action(ClearSettings)
     api.register_track_action(ClearSettings)
     api.register_album_action(ClearSettings)
+
+    api.register_file_action(WriteSettingTypes)
+    api.register_track_action(WriteSettingTypes)
+    api.register_album_action(WriteSettingTypes)
+
+    api.register_file_action(ReadSettingTypes)
+    api.register_track_action(ReadSettingTypes)
+    api.register_album_action(ReadSettingTypes)
