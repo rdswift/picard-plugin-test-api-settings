@@ -31,59 +31,43 @@ from picard.plugin3.api import (
 
 
 class TestSettings(BaseAction):
-    NAME = 'Test API Settings'
+    NAME = 'Test API Settings: Read/Write'
 
     def __init__(self, api: PluginApi = None):
         super().__init__(api=api)
         self.api: PluginApi
 
     def callback(self, objs):
-        self.api.logger.debug("Testing Test API Settings Plugin configuration management.")
-        self.api.logger.info("Setting Test API Settings Plugin config 'bool_setting' to True")
-        self.api.plugin_config['bool_setting'] = True
-        self.api.logger.info("Getting Test API Settings Plugin config 'bool_setting': %s", self.api.plugin_config.get('bool_setting'))
-        self.api.logger.info("Setting Test API Settings Plugin config 'bool_setting' to False")
-        self.api.plugin_config['bool_setting'] = False
-        self.api.logger.info("Getting Test API Settings Plugin config 'bool_setting': %s", self.api.plugin_config.get('bool_setting'))
+        self.api.logger.debug("# Testing Test API Settings Plugin configuration management.")
 
-        self.api.logger.info("Setting Test API Settings Plugin config 'int_setting' to 42")
-        self.api.plugin_config['int_setting'] = 42
-        self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %s", self.api.plugin_config.get('int_setting'))
-        self.api.logger.info("Setting Test API Settings Plugin config 'int_setting' to -1")
-        self.api.plugin_config['int_setting'] = -1
-        self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %s", self.api.plugin_config.get('int_setting'))
+        self.api.logger.debug("# Initial settings (default values if not already set)")
+        for key in ['bool_setting', 'int_setting', 'float_setting', 'str_setting', 'list_setting', 'dict_setting']:
+            self.api.logger.info(f"api.plugin_config['{key}'] = {repr(self.api.plugin_config[key])}")
 
-        self.api.logger.info("Setting Test API Settings Plugin config 'float_setting' to 1.23")
-        self.api.plugin_config['float_setting'] = 1.23
-        self.api.logger.info("Getting Test API Settings Plugin config 'float_setting': %s", self.api.plugin_config.get('float_setting'))
-        self.api.logger.info("Setting Test API Settings Plugin config 'float_setting' to -2.34")
-        self.api.plugin_config['float_setting'] = -2.34
-        self.api.logger.info("Getting Test API Settings Plugin config 'float_setting': %s", self.api.plugin_config.get('float_setting'))
+        test_settings = [
+            ('bool_setting', True),
+            ('bool_setting', False),
+            ('int_setting', 42),
+            ('int_setting', -1),
+            ('float_setting', 1.23),
+            ('float_setting', -2.34),
+            ('str_setting', "Hello, World!"),
+            ('str_setting', "All done."),
+            ('list_setting', ['one', 'two', 'three']),
+            ('list_setting', ['A', 'B', 'C']),
+            ('dict_setting', {'key1': 'value1', 'key2': 'value2'}),
+            ('dict_setting', {'keyA': 'valueA', 'keyB': 'valueB'}),
+        ]
 
-        self.api.logger.info("Setting Test API Settings Plugin config 'str_setting' to 'Hello, World!'")
-        self.api.plugin_config['str_setting'] = 'Hello, World!'
-        self.api.logger.info("Getting Test API Settings Plugin config 'str_setting': %s", self.api.plugin_config.get('str_setting'))
-        self.api.logger.info("Setting Test API Settings Plugin config 'str_setting' to 'All done.'")
-        self.api.plugin_config['str_setting'] = 'All done.'
-        self.api.logger.info("Getting Test API Settings Plugin config 'str_setting': %s", self.api.plugin_config.get('str_setting'))
-
-        self.api.logger.info("Setting Test API Settings Plugin config 'list_setting' to ['one', 'two', 'three']")
-        self.api.plugin_config['list_setting'] = ['one', 'two', 'three']
-        self.api.logger.info("Getting Test API Settings Plugin config 'list_setting': %s", self.api.plugin_config.get('list_setting'))
-        self.api.logger.info("Setting Test API Settings Plugin config 'list_setting' to ['A', 'B', 'C']")
-        self.api.plugin_config['list_setting'] = ['A', 'B', 'C']
-        self.api.logger.info("Getting Test API Settings Plugin config 'list_setting': %s", self.api.plugin_config.get('list_setting'))
-
-        self.api.logger.info("Setting Test API Settings Plugin config 'dict_setting' to {'key1': 'value1', 'key2': 'value2'}")
-        self.api.plugin_config['dict_setting'] = {'key1': 'value1', 'key2': 'value2'}
-        self.api.logger.info("Getting Test API Settings Plugin config 'dict_setting': %s", self.api.plugin_config.get('dict_setting'))
-        self.api.logger.info("Setting Test API Settings Plugin config 'dict_setting' to {'keyA': 'valueA', 'keyB': 'valueB'}")
-        self.api.plugin_config['dict_setting'] = {'keyA': 'valueA', 'keyB': 'valueB'}
-        self.api.logger.info("Getting Test API Settings Plugin config 'dict_setting': %s", self.api.plugin_config.get('dict_setting'))
+        self.api.logger.debug("# Test adding/changing settings")
+        for key, value in test_settings:
+            self.api.logger.info(f"Setting api.plugin_config['{key}'] = {repr(value)}")
+            self.api.plugin_config[key] = value
+            self.api.logger.info(f"The value of api.plugin_config['{key}'] is now {repr(self.api.plugin_config[key])}")
 
 
 class ClearSettings(BaseAction):
-    NAME = 'Remove API Settings'
+    NAME = 'Test API Settings: Remove Settings'
 
     def __init__(self, api: PluginApi = None):
         super().__init__(api=api)
@@ -91,89 +75,44 @@ class ClearSettings(BaseAction):
 
     def callback(self, objs):
         self.api.logger.debug("Removing Test API Settings Plugin configuration settings.")
-        self.api.logger.info("Removing Test API Settings Plugin config 'bool_setting'")
-        self.api.plugin_config.remove('bool_setting')
-        self.api.logger.info("Getting Test API Settings Plugin config 'bool_setting': %s", self.api.plugin_config.get('bool_setting'))
-
-        self.api.logger.info("Removing Test API Settings Plugin config 'int_setting'")
-        self.api.plugin_config.remove('int_setting')
-        self.api.logger.info("Getting Test API Settings Plugin config 'int_setting': %s", self.api.plugin_config.get('int_setting'))
-
-        self.api.logger.info("Removing Test API Settings Plugin config 'float_setting'")
-        self.api.plugin_config.remove('float_setting')
-        self.api.logger.info("Getting Test API Settings Plugin config 'float_setting': %s", self.api.plugin_config.get('float_setting'))
-
-        self.api.logger.info("Removing Test API Settings Plugin config 'str_setting'")
-        self.api.plugin_config.remove('str_setting')
-        self.api.logger.info("Getting Test API Settings Plugin config 'str_setting': %s", self.api.plugin_config.get('str_setting'))
-
-        self.api.logger.info("Removing Test API Settings Plugin config 'list_setting'")
-        self.api.plugin_config.remove('list_setting')
-        self.api.logger.info("Getting Test API Settings Plugin config 'list_setting': %s", self.api.plugin_config.get('list_setting'))
-
-        self.api.logger.info("Removing Test API Settings Plugin config 'dict_setting'")
-        self.api.plugin_config.remove('dict_setting')
-        self.api.logger.info("Getting Test API Settings Plugin config 'dict_setting': %s", self.api.plugin_config.get('dict_setting'))
-
-
-class WriteSettingTypes(BaseAction):
-    NAME = 'Test API Settings Types (write settings)'
-
-    def __init__(self, api: PluginApi = None):
-        super().__init__(api=api)
-        self.api: PluginApi
-
-    def callback(self, objs):
-        self.api.logger.debug("Testing API plugin settings types (writing settings).")
-
-        self.api.logger.info("Setting 'bool_setting' to True")
-        self.api.plugin_config['bool_setting'] = True
-
-        self.api.logger.info("Setting 'int_setting' to 42")
-        self.api.plugin_config['int_setting'] = 42
-
-        self.api.logger.info("Setting 'float_setting' to 1.23")
-        self.api.plugin_config['float_setting'] = 1.23
-
-        self.api.logger.info("Setting 'str_setting' to 'Hello, World!'")
-        self.api.plugin_config['str_setting'] = 'Hello, World!'
-
-        self.api.logger.info("Setting 'list_setting' to ['one', 'two', 'three']")
-        self.api.plugin_config['list_setting'] = ['one', 'two', 'three']
-
-        self.api.logger.info("Setting Test API Settings Plugin config 'dict_setting' to {'key1': 'value1', 'key2': 'value2'}")
-        self.api.plugin_config['dict_setting'] = {'key1': 'value1', 'key2': 'value2'}
+        for key in ['bool_setting', 'int_setting', 'float_setting', 'str_setting', 'list_setting', 'dict_setting']:
+            self.api.logger.info(f"Removing api.plugin_config['{key}']")
+            self.api.plugin_config.remove(key)
 
 
 class ReadSettingTypes(BaseAction):
-    NAME = 'Test API Settings Types (read settings)'
+    NAME = 'Test API Settings: Check Types'
 
     def __init__(self, api: PluginApi = None):
         super().__init__(api=api)
         self.api: PluginApi
 
     def callback(self, objs):
-        self.api.logger.debug("Testing API plugin settings types (reading settings).")
+        self.api.logger.debug("Testing API plugin settings types.")
 
         for key in ['bool_setting', 'int_setting', 'float_setting', 'str_setting', 'list_setting', 'dict_setting']:
-            value = self.api.plugin_config.get(key)
-            self.api.logger.info(f".get('{key}')  {type(value)}  = {repr(value)}")
+            value = self.api.plugin_config[key]
+            self.api.logger.info(f"api.plugin_config['{key}'] {type(value)} = {repr(value)}")
 
 
 def enable(api: PluginApi):
     """Called when plugin is enabled."""
+
+    api.plugin_config.register_option('bool_setting', True)
+    api.plugin_config.register_option('int_setting', 42)
+    api.plugin_config.register_option('float_setting', 1.23)
+    api.plugin_config.register_option('str_setting', "Hello, World!")
+    api.plugin_config.register_option('list_setting', ['one', 'two', 'three'])
+    api.plugin_config.register_option('dict_setting', {'key1': 'value1', 'key2': 'value2'})
+
     api.register_file_action(TestSettings)
     api.register_track_action(TestSettings)
     api.register_album_action(TestSettings)
 
-    api.register_file_action(ClearSettings)
-    api.register_track_action(ClearSettings)
-    api.register_album_action(ClearSettings)
-
-    api.register_file_action(WriteSettingTypes)
-    api.register_track_action(WriteSettingTypes)
-    api.register_album_action(WriteSettingTypes)
-
     api.register_file_action(ReadSettingTypes)
     api.register_track_action(ReadSettingTypes)
     api.register_album_action(ReadSettingTypes)
+
+    api.register_file_action(ClearSettings)
+    api.register_track_action(ClearSettings)
+    api.register_album_action(ClearSettings)
